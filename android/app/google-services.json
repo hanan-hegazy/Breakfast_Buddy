@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158324234474",
+    "project_id": "breakfast-buddy-174f1",
+    "storage_bucket": "breakfast-buddy-174f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158324234474:android:4c3dddc23515027cb29f93",
+        "android_client_info": {
+          "package_name": "com.example.breakfast_buddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDHQtgbS8uJwDp0WYKRpEFt2FoYssUvaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
