@@ -5,6 +5,7 @@ import 'package:breakfast_buddy/core/constants/app_colors.dart';
 import 'package:breakfast_buddy/core/services/category_service.dart';
 import 'package:breakfast_buddy/models/category_model.dart';
 import 'package:breakfast_buddy/widgets/category_card.dart';
+import 'package:breakfast_buddy/User_pages/products_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({super.key});
@@ -12,10 +13,13 @@ class CategoriesScreen extends StatelessWidget {
   final CategoryService _categoryService = CategoryService();
 
   void _openCategory(BuildContext context, CategoryModel category) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${category.name} selected'),
-        backgroundColor: AppColors.primaryBrown,
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductsScreen(
+          categoryId: category.id,
+          categoryName: category.name,
+        ),
       ),
     );
   }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
 import 'package:breakfast_buddy/core/constants/app_colors.dart';
 import 'package:breakfast_buddy/widgets/category_card.dart';
 import 'package:breakfast_buddy/User_pages/categories_screen.dart';
+import 'package:breakfast_buddy/User_pages/cart_screen.dart';
+import 'package:breakfast_buddy/providers/cart_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -60,7 +64,9 @@ class HomeScreen extends StatelessWidget {
               size: 27,
             ),
           ),
+
           const SizedBox(width: 12),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,18 +89,62 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: () => showMessage(context, 'Your cart is empty'),
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
-              color: AppColors.primaryBrown,
-              size: 25,
-            ),
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.white,
-              side: const BorderSide(color: AppColors.inputBorder),
-              fixedSize: const Size(46, 46),
-            ),
+
+          // Cart Icon
+          Consumer<CartProvider>(
+            builder: (context, cartProvider, child) {
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.shopping_bag_outlined,
+                      color: AppColors.primaryBrown,
+                      size: 25,
+                    ),
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.white,
+                      side: const BorderSide(color: AppColors.inputBorder),
+                      fixedSize: const Size(46, 46),
+                    ),
+                  ),
+
+                  if (cartProvider.itemCount > 0)
+                    Positioned(
+                      right: -3,
+                      top: -3,
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        constraints: const BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: AppColors.orange,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          cartProvider.itemCount > 99
+                              ? '99+'
+                              : '${cartProvider.itemCount}',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -181,7 +231,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
+
             Text(
               'Your Morning, Your Way',
               style: GoogleFonts.outfit(
@@ -190,6 +242,7 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.white,
               ),
             ),
+
             Text(
               'Handcrafted breakfast and morning brews',
               style: GoogleFonts.plusJakartaSans(
@@ -197,9 +250,13 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.white,
               ),
             ),
+
             const SizedBox(height: 12),
+
             ElevatedButton(
-              onPressed: () => showMessage(context, 'Special offer selected'),
+              onPressed: () {
+                showMessage(context, 'Special offer selected');
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.orange,
                 foregroundColor: AppColors.white,
@@ -214,9 +271,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Categories
-
-  // Categories
-
   Widget _buildCategories(BuildContext context) {
     final categories = [
       {'name': 'Sweet Bakery', 'icon': Icons.bakery_dining},
@@ -334,6 +388,7 @@ class HomeScreen extends StatelessWidget {
           'Freshly prepared cafe staples',
           context,
         ),
+
         SizedBox(
           height: 275,
           child: ListView.separated(
@@ -362,14 +417,18 @@ class HomeScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 135,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          height: 135,
-                          color: AppColors.softCream,
-                          child: const Icon(Icons.fastfood),
-                        ),
+                        errorBuilder: (_, __, ___) {
+                          return Container(
+                            height: 135,
+                            color: AppColors.softCream,
+                            child: const Icon(Icons.fastfood),
+                          );
+                        },
                       ),
                     ),
+
                     const SizedBox(height: 10),
+
                     Text(
                       product['name']!,
                       maxLines: 1,
@@ -380,6 +439,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.primaryBrown,
                       ),
                     ),
+
                     Text(
                       product['description']!,
                       style: GoogleFonts.plusJakartaSans(
@@ -387,7 +447,9 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.secondaryText,
                       ),
                     ),
+
                     const Spacer(),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -399,11 +461,14 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primaryBrown,
                           ),
                         ),
+
                         IconButton(
-                          onPressed: () => showMessage(
-                            context,
-                            '${product['name']} added to cart',
-                          ),
+                          onPressed: () {
+                            showMessage(
+                              context,
+                              '${product['name']} added to cart',
+                            );
+                          },
                           icon: const Icon(Icons.add),
                           style: IconButton.styleFrom(
                             backgroundColor: AppColors.orange,
@@ -456,7 +521,9 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.primaryBrown,
             ),
           ),
+
           const SizedBox(height: 4),
+
           Text(
             'Curated for your palate',
             style: GoogleFonts.plusJakartaSans(
@@ -464,7 +531,9 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.secondaryText,
             ),
           ),
+
           const SizedBox(height: 14),
+
           ...recommendations.map((product) {
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
@@ -483,15 +552,19 @@ class HomeScreen extends StatelessWidget {
                       width: 75,
                       height: 75,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        width: 75,
-                        height: 75,
-                        color: AppColors.softCream,
-                        child: const Icon(Icons.fastfood),
-                      ),
+                      errorBuilder: (_, __, ___) {
+                        return Container(
+                          width: 75,
+                          height: 75,
+                          color: AppColors.softCream,
+                          child: const Icon(Icons.fastfood),
+                        );
+                      },
                     ),
                   ),
+
                   const SizedBox(width: 12),
+
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -513,6 +586,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+
                         Text(
                           product['name']!,
                           maxLines: 1,
@@ -523,6 +597,7 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primaryBrown,
                           ),
                         ),
+
                         Text(
                           product['description']!,
                           maxLines: 1,
@@ -532,6 +607,7 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.secondaryText,
                           ),
                         ),
+
                         Text(
                           product['price']!,
                           style: GoogleFonts.outfit(
@@ -543,11 +619,11 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   IconButton(
-                    onPressed: () => showMessage(
-                      context,
-                      '${product['name']} added to cart',
-                    ),
+                    onPressed: () {
+                      showMessage(context, '${product['name']} added to cart');
+                    },
                     icon: const Icon(Icons.add),
                     style: IconButton.styleFrom(
                       backgroundColor: AppColors.peachLight,
